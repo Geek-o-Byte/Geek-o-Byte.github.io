@@ -1,8 +1,6 @@
 export default function Page(){
     return(
     <div>
-        Blog page 
-        <br/>
-        <a href="/">Back to home</a>
+        <p className="text-center text-3xl">temporarily empty👽</p>
     </div>)
 }
