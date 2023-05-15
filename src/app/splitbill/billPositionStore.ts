@@ -5,7 +5,7 @@ interface UserPosition{
     position: number
 }
 
-const useStore = create((set) => ({
+const useStore: any = create((set: any) => ({
     user: null,
     addUser: () => set((state: any) => ({ userList: "Ivan"})),
     removeUser: () => set((state: any) => ({ userList: null })),
