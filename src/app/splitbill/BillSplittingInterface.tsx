@@ -94,14 +94,14 @@ const BillInterface: React.FC = () => {
         >
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <span className="text-gray-600">${position.price.toFixed(2)}</span>
               <h2 className="text-xl font-bold">{position.name}</h2>
+              <span className="text-gray-600">${position.price.toFixed(2)}</span>
             </div>
             <div className="flex items-center">
               <button
                 className="bg-blue-500 text-white px-2 py-1 rounded"
                 onClick={() => increaseCount(position.id)}
-                disabled={userCounts[position.id] && userCounts[position.id] >= position.count}
+                disabled={userCounts[position.id] ? userCounts[position.id] >= position.count : undefined}
               >
                 +
               </button>
@@ -129,7 +129,7 @@ const BillInterface: React.FC = () => {
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white p-4 flex justify-center">
         <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handlePay}>
-          Pay
+          Pay ${getTotalPrice().toFixed(2)}
         </button>
       </div>
     </div>
