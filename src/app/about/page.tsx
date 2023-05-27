@@ -60,7 +60,6 @@ const CV = () => {
           <ul className="list-disc list-inside mb-6">
             <li>Email: [first name]miriko@gmail.com</li>
             <li>LinkedIn: <a href="https://www.linkedin.com/in/max-maslov/" className="text-blue-500">Max Maslov</a></li>
-            <li>Website: <a href="https://geek-o-byte.github.io/" className="text-blue-500">geek-o-byte.github.io</a></li>
             <li>GitHub: <a href="https://github.com/geek-o-byte" className="text-blue-500">geek-o-byte</a></li>
           </ul>
         </div>
