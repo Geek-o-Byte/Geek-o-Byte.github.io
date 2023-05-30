@@ -1,5 +1,5 @@
 import React from 'react';
-import create from 'zustand';
+import {create} from 'zustand';
 
 interface OrderPosition {
   id: number;
@@ -112,15 +112,15 @@ const BillInterface: React.FC = () => {
           <div className="flex justify-between">
             <div className="flex flex-col">
               <h2 className="text-xl font-bold">{position.name}</h2>
-              <span className="text-gray-600">${position.price.toFixed(2)}</span>
+              <span className="text-gray-600">${position.price.toFixed(2) + " ✖ " + position.count}</span>
             </div>
             <div className="flex items-center">
               <button
                 className="bg-blue-500 text-white px-2 py-1 rounded"
-                onClick={() => increaseCount(position.id)}
-                disabled={userCounts[position.id] ? userCounts[position.id] >= position.count : undefined}
+                onClick={() => decreaseCount(position.id)}
+                disabled={!userCounts[position.id] || userCounts[position.id] === 0}
               >
-                +
+                -
               </button>
               <input
                 type="number"
@@ -131,10 +131,10 @@ const BillInterface: React.FC = () => {
               />
               <button
                 className="bg-blue-500 text-white px-2 py-1 rounded"
-                onClick={() => decreaseCount(position.id)}
-                disabled={!userCounts[position.id] || userCounts[position.id] === 0}
+                onClick={() => increaseCount(position.id)}
+                disabled={userCounts[position.id] ? userCounts[position.id] >= position.count : undefined}
               >
-                -
+                +
               </button>
             </div>
           </div>
