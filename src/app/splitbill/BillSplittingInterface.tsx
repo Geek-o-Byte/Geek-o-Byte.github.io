@@ -74,9 +74,26 @@ const BillInterface: React.FC = () => {
     let totalPrice = 0;
     for (const position of testPositions) {
       const userCount = userCounts[position.id] ?? 0;
-      totalPrice += position.price * userCount;
+      totalPrice += position.price * position.count;
     }
     return totalPrice;
+  };
+  
+  const getRemainingPrice = (): number => {
+    const totalPrice = getTotalPrice();
+    let userPrice = 0;
+    for (const position of testPositions) {
+      const userCount = userCounts[position.id] ?? 0;
+      userPrice += position.price * userCount;
+    }
+    //return totalPrice - userPrice;
+    return userPrice
+  };
+  
+  const getRemainingPercentage = (): number => {
+    const totalPrice = getTotalPrice();
+    const remainingPrice = getRemainingPrice();
+    return totalPrice > 0 ? (remainingPrice / totalPrice) * 100 : 0;
   };
 
   if (!testPositions || testPositions.length === 0) {
@@ -126,6 +143,16 @@ const BillInterface: React.FC = () => {
       <div className="flex justify-between">
         <span className="text-gray-600">Total Price:</span>
         <span className="font-bold">${getTotalPrice().toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between">
+        <span className="text-gray-600">Remaining Price:</span>
+        <span className="font-bold">${getRemainingPrice().toFixed(2)}</span>
+      </div>
+      <div className="w-full h-4 bg-gray-200 rounded mt-4">
+        <div
+          className="h-full bg-blue-500 rounded"
+          style={{ width: `${getRemainingPercentage()}%` }}
+        ></div>
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white p-4 flex justify-center">
         <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handlePay}>
