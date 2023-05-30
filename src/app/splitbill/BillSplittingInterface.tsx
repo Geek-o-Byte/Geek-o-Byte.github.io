@@ -123,7 +123,7 @@ const BillInterface: React.FC = () => {
                 -
               </button>
               <input
-                type="number"
+                type="text"
                 min="0"
                 className="border border-gray-300 px-2 py-1 mx-2 w-16 text-center"
                 value={userCounts[position.id] ?? 0}
