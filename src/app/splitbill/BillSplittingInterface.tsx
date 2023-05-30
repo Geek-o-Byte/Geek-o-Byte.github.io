@@ -156,7 +156,7 @@ const BillInterface: React.FC = () => {
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white p-4 flex justify-center">
         <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handlePay}>
-          Pay ${getTotalPrice().toFixed(2)}
+          Pay ${getRemainingPrice().toFixed(2)}
         </button>
       </div>
     </div>
