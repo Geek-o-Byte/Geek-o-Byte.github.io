@@ -13,6 +13,7 @@ type UserStoreState = {
   userPrices: Record<number, number>;
   increaseCount: (id: number) => void;
   decreaseCount: (id: number) => void;
+  rangeCount: (id: number, percentage: number) => void;
 };
 
 const useUserStore = create<UserStoreState>((set) => ({
@@ -22,7 +23,7 @@ const useUserStore = create<UserStoreState>((set) => ({
     set((state) => {
       const position = testPositions.find((pos) => pos.id === id);
       if (position) {
-        const userPrice = (state.userPrices[id] || 0) + (position.price * position.count);
+        const userPrice = (state.userPrices[id] || 0) + position.price * position.count;
         return {
           userPrices: {
             ...state.userPrices,
@@ -38,7 +39,7 @@ const useUserStore = create<UserStoreState>((set) => ({
     set((state) => {
       const position = testPositions.find((pos) => pos.id === id);
       if (position) {
-        const userPrice = (state.userPrices[id] || 0) - (position.price * position.count);
+        const userPrice = (state.userPrices[id] || 0) - position.price * position.count;
         if (userPrice >= 0) {
           return {
             userPrices: {
@@ -48,6 +49,22 @@ const useUserStore = create<UserStoreState>((set) => ({
             selectedPositions: state.selectedPositions.filter((posId) => posId !== id),
           };
         }
+      }
+      return state;
+    });
+  },
+  rangeCount: (id, percentage) => {
+    set((state) => {
+      const position = testPositions.find((pos) => pos.id === id);
+      if (position) {
+        const count = (position.count * percentage) / 100;
+        const userPrice = position.price * count;
+        return {
+          userPrices: {
+            ...state.userPrices,
+            [id]: userPrice,
+          },
+        };
       }
       return state;
     });
@@ -80,6 +97,7 @@ const BillInterface: React.FC = () => {
   const selectedPositions = useUserStore((state) => state.selectedPositions);
   const increaseCount = useUserStore((state) => state.increaseCount);
   const decreaseCount = useUserStore((state) => state.decreaseCount);
+  const rangeCount = useUserStore((state) => state.rangeCount);
 
   const handlePay = () => {
     // Payment logic
@@ -91,6 +109,10 @@ const BillInterface: React.FC = () => {
     } else {
       increaseCount(positionId);
     }
+  };
+
+  const handleRangeChange = (positionId: number, percentage: number) => {
+    rangeCount(positionId, percentage);
   };
 
   const getTotalPrice = (): number => {
@@ -124,15 +146,19 @@ const BillInterface: React.FC = () => {
   return (
     <div className="container mx-auto p-4 max-w-lg">
       <h2 className="text-2xl mb-6">Splitbill test preview</h2>
+      <div className="rounded shadow-md p-4 mb-4">
+        <h2 className="mb-5 text-2xl font-bold">Guests</h2>
+        <span className="px-3 py-2 bg-blue-600 rounded-full text-white">Max</span>
+      </div>
       {testPositions.map((position) => (
         <div
           key={position.id}
-          className={`bg-white rounded shadow-md p-4 mb-4 ${
-            userPrices[position.id] && userPrices[position.id] > 0 ? 'bg-blue-100' : ''
-          } ${selectedPositions.includes(position.id) ? 'bg-blue-200' : ''}`}
-          onClick={() => handlePositionClick(position.id)}
+          className={`rounded shadow-md p-4 mb-4 hover:cursor-pointer`}
         >
-          <div className="flex justify-between">
+          <div
+            className={`flex justify-between`}
+            onClick={() => handlePositionClick(position.id)}
+          >
             <div className="flex flex-col">
               <h2 className="text-xl font-bold">{position.name}</h2>
               <span className="text-gray-600">
@@ -145,6 +171,27 @@ const BillInterface: React.FC = () => {
               </h2>
             </div>
           </div>
+          <div className={`${selectedPositions.includes(position.id) ? '' : 'hidden'}`}>
+            <hr className="my-3" />
+            <div className="flex justify-between">
+              <span className="px-3 py-2 bg-blue-600 rounded-full text-white">Max</span>
+              {/* <h2>You pay: {position.count * position.price + ' $'}</h2> */}
+              <h2>You pay: {(userPrices[position.id] || 0).toFixed(2)  + ' $'}</h2>
+            </div>
+            <hr className="my-3" />
+            <div className="flex justify-between">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={1}
+                className="w-full"
+                onChange={(e) =>
+                  handleRangeChange(position.id, parseInt(e.target.value, 10))
+                }
+              />
+            </div>
+          </div>
         </div>
       ))}
       <div className="flex justify-between">
@@ -155,7 +202,7 @@ const BillInterface: React.FC = () => {
         <span className="text-gray-600">Remaining Price:</span>
         <span className="font-bold">${getRemainingPrice().toFixed(2)}</span>
       </div>
-      <div className="w-full h-4 bg-gray-200 rounded mt-4">
+      <div className="w-full h-4 bg-gray-200 rounded mt-4 mb-24">
         <div
           className="h-full bg-blue-500 rounded"
           style={{ width: `${getRemainingPercentage()}%` }}
