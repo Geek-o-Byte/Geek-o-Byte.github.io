@@ -1,0 +1,29 @@
+- title: APPROX
+  year: 2025
+  id: approx25
+  full_name: International Conference on Approximation Algorithms for Combinatorial Optimization Problems
+  link: https://approxconference.com/
+  deadlines:
+  - type: submission
+    label: Paper Submission
+    date: '2025-05-08 23:59:59'
+    timezone: AoE
+  - type: notification
+    label: Notifications to authors
+    date: '2025-07-01 23:59:59'
+    timezone: AoE
+  - type: camera_ready
+    label: Camera-ready (for accepted papers)
+    date: '2025-07-15 23:59:59'
+    timezone: AoE
+  timezone: UTC-00
+  date: August 11-13, 2025
+  city: Berkeley, CA
+  country: USA
+  start: 2025-08-11
+  end: 2025-08-13
+  tags:
+  - theoretical-computer-science
+  - algorithms
+  - combinatorial-optimization
+  note: Held together with RANDOM 2025 at UC Berkeley.  
