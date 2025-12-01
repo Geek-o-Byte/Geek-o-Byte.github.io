@@ -26,8 +26,6 @@ interface ConferenceDialogProps {
 }
 
 const ConferenceDialog = ({ conference, open, onOpenChange }: ConferenceDialogProps) => {
-  console.log('Conference object:', conference);
-  
   // Get upcoming deadlines and the next upcoming one
   const upcomingDeadlines = getUpcomingDeadlines(conference);
   const nextDeadline = getNextUpcomingDeadline(conference);
@@ -37,20 +35,12 @@ const ConferenceDialog = ({ conference, open, onOpenChange }: ConferenceDialogPr
 
   // Replace the current location string creation with this more verbose version
   const getLocationString = () => {
-    console.log('Venue:', conference.venue);
-    console.log('City:', conference.city);
-    console.log('Country:', conference.country);
-
     if (conference.venue) {
       return conference.venue;
     }
 
     const cityCountryArray = [conference.city, conference.country].filter(Boolean);
-    console.log('City/Country array after filter:', cityCountryArray);
-    
     const cityCountryString = cityCountryArray.join(", ");
-    console.log('Final location string:', cityCountryString);
-
     return cityCountryString || "Location TBD"; // Fallback if everything is empty
   };
 
