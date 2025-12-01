@@ -58,7 +58,7 @@ const ConferenceCard = ({
 
   // Determine countdown color based on days remaining
   const getCountdownColor = () => {
-    if (!deadlineDate || !isValid(deadlineDate)) return "text-neutral-600";
+    if (!deadlineDate || !isValid(deadlineDate)) return "text-muted-foreground";
     try {
       const daysRemaining = Math.ceil((deadlineDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
       if (daysRemaining <= 7) return "text-red-600";
@@ -66,7 +66,7 @@ const ConferenceCard = ({
       return "text-green-600";
     } catch (error) {
       console.error('Error calculating countdown color:', error);
-      return "text-neutral-600";
+      return "text-muted-foreground";
     }
   };
 
@@ -103,7 +103,7 @@ const ConferenceCard = ({
   return (
     <>
       <div 
-        className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 flex flex-col cursor-pointer"
+        className="bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 flex flex-col cursor-pointer text-card-foreground"
         onClick={handleCardClick}
       >
         <div className="flex justify-between items-start mb-2">
@@ -124,17 +124,17 @@ const ConferenceCard = ({
         </div>
         
         <div className="flex flex-col gap-2 mb-3">
-          <div className="flex items-center text-neutral">
+          <div className="flex items-center text-muted-foreground">
             <CalendarDays className="h-4 w-4 mr-2 flex-shrink-0" />
             <span className="text-sm truncate">{date}</span>
           </div>
           {location && (
-            <div className="flex items-center text-neutral">
+            <div className="flex items-center text-muted-foreground">
               <Globe className="h-4 w-4 mr-2 flex-shrink-0" />
               <span className="text-sm truncate">{location}</span>
             </div>
           )}
-          <div className="flex items-center text-neutral">
+          <div className="flex items-center text-muted-foreground">
             <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
             <span className="text-sm truncate">
               {nextDeadline ? `${nextDeadline.label}: ${nextDeadline.date}` : (deadline === 'TBD' ? 'TBD' : deadline)}

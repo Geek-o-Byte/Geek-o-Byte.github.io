@@ -152,7 +152,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-light">
+    <div className="min-h-screen bg-background">
       <Header 
         onSearch={setSearchQuery} 
         showEmptyMessage={false}
@@ -160,15 +160,15 @@ const Index = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-4 py-4">
           {/* Category filter buttons */}
-          <div className="bg-white shadow rounded-lg p-4">
+          <div className="bg-card border border-border rounded-lg p-4 shadow-sm">
             <div className="flex flex-wrap gap-2">
               {categoryButtons.map(category => (
                 <button
                   key={category.id}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     selectedTags.has(category.id) 
-                      ? 'bg-blue-100 text-blue-800 hover:bg-blue-200' 
-                      : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                      ? 'bg-primary/15 text-primary hover:bg-primary/20' 
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                   onClick={() => {
                     const newTags = new Set(selectedTags);
@@ -188,8 +188,8 @@ const Index = () => {
           
           {/* Controls row with past conferences toggle and country filter */}
           <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2 bg-white p-2 rounded-md shadow-sm">
-              <label htmlFor="show-past" className="text-sm text-neutral-600">
+            <div className="flex items-center gap-2 bg-card border border-border p-2 rounded-md shadow-sm">
+              <label htmlFor="show-past" className="text-sm text-muted-foreground">
                 Show past conferences
               </label>
               <Switch
@@ -199,7 +199,7 @@ const Index = () => {
               />
             </div>
             
-            <div className="flex items-center gap-2 bg-white p-2 rounded-md shadow-sm">
+            <div className="flex items-center gap-2 bg-card border border-border p-2 rounded-md shadow-sm">
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" size="sm" className="h-8 gap-1">
@@ -207,18 +207,18 @@ const Index = () => {
                     Filter by Country
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-64 p-4 bg-white" align="start">
+                <PopoverContent className="w-64 p-4 bg-popover border border-border" align="start">
                   <div className="space-y-4">
                     <div>
                       <div className="mb-4">
-                        <h4 className="text-sm font-medium text-gray-800">Country</h4>
+                        <h4 className="text-sm font-medium text-foreground">Country</h4>
                       </div>
                       <div 
-                        className="max-h-60 overflow-y-auto space-y-2 bg-white overscroll-contain touch-pan-y" 
+                        className="max-h-60 overflow-y-auto space-y-2 bg-popover overscroll-contain touch-pan-y" 
                         style={{ WebkitOverflowScrolling: "touch" }}
                       >
                         {getAllCountries(conferencesData as Conference[]).map(country => (
-                          <div key={country} className="flex items-center space-x-2 hover:bg-gray-50 p-1 rounded">
+                          <div key={country} className="flex items-center space-x-2 hover:bg-muted/60 p-1 rounded">
                             <Checkbox 
                               id={`country-${country}`}
                               checked={selectedCountries.has(country)}
@@ -234,7 +234,7 @@ const Index = () => {
                             />
                             <label 
                               htmlFor={`country-${country}`}
-                              className="text-sm font-medium text-gray-700 cursor-pointer w-full py-1"
+                              className="text-sm font-medium text-muted-foreground cursor-pointer w-full py-1"
                             >
                               {country}
                             </label>
@@ -250,7 +250,7 @@ const Index = () => {
               {Array.from(selectedCountries).map(country => (
                 <button
                   key={country}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800 hover:bg-blue-200 font-medium"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary/15 text-primary hover:bg-primary/20 font-medium"
                   onClick={() => {
                     const newCountries = new Set(selectedCountries);
                     newCountries.delete(country);
@@ -271,7 +271,7 @@ const Index = () => {
                     handleTagsChange(new Set());
                     handleCountriesChange(new Set());
                   }}
-                  className="text-neutral-500 hover:text-neutral-700"
+                  className="text-muted-foreground hover:text-foreground"
                 >
                   Clear all filters
                 </Button>
@@ -282,7 +282,7 @@ const Index = () => {
       </div>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {filteredConferences.length === 0 && (
-          <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-md p-4 mb-6">
+          <div className="bg-amber-100/60 dark:bg-amber-900/30 border border-amber-200/70 dark:border-amber-800 text-amber-900 dark:text-amber-100 rounded-md p-4 mb-6">
             <p className="text-center">
               There are no upcoming conferences for the selected categories - enable "Show past conferences" to see previous ones
             </p>

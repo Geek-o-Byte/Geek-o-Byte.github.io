@@ -62,7 +62,7 @@ const FilterBar = ({
   };
 
   return (
-    <div className="bg-white shadow rounded-lg p-4">
+    <div className="bg-card border border-border rounded-lg p-4 shadow-sm">
       <div className="flex flex-col space-y-4">
         <div className="flex flex-wrap items-center gap-2">
           <Popover>
@@ -72,16 +72,16 @@ const FilterBar = ({
                 Filter by Tag
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-80 p-4" align="start">
+            <PopoverContent className="w-80 p-4 bg-popover border border-border" align="start">
               <div className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h4 className="text-sm font-medium text-gray-800">Tags</h4>
-                    <ChevronRight className="h-4 w-4 text-gray-500" />
+                    <h4 className="text-sm font-medium text-foreground">Tags</h4>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <div className="max-h-60 overflow-y-auto space-y-2">
                     {uniqueTags.map(tag => (
-                      <div key={tag.id} className="flex items-center space-x-2 hover:bg-gray-50 p-1 rounded">
+                      <div key={tag.id} className="flex items-center space-x-2 hover:bg-muted/60 p-1 rounded">
                         <Checkbox 
                           id={`tag-${tag.id}`}
                           checked={isTagSelected(tag.id)}
@@ -89,7 +89,7 @@ const FilterBar = ({
                         />
                         <label 
                           htmlFor={`tag-${tag.id}`}
-                          className="text-sm font-medium text-gray-700 cursor-pointer w-full py-1"
+                          className="text-sm font-medium text-muted-foreground cursor-pointer w-full py-1"
                         >
                           {tag.label}
                         </label>
@@ -107,7 +107,7 @@ const FilterBar = ({
               variant="ghost" 
               size="sm" 
               onClick={clearAllFilters}
-              className="text-neutral-500 hover:text-neutral-700"
+              className="text-muted-foreground hover:text-foreground"
             >
               Clear all
             </Button>
@@ -117,7 +117,7 @@ const FilterBar = ({
           {Array.from(selectedTags).map(tag => (
             <button
               key={tag}
-              className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800 hover:bg-blue-200 font-medium"
+              className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary/15 text-primary hover:bg-primary/20 font-medium"
               onClick={() => handleTagChange(tag)}
             >
               {tag.split("-").map(word => 

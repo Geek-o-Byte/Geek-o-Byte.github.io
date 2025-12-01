@@ -324,9 +324,9 @@ const CalendarPage = () => {
       <div className="border-b last:border-b-0 pb-4 last:pb-0 mb-4 last:mb-0">
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="font-semibold text-lg text-neutral-900">{conf.title}</h3>
+            <h3 className="font-semibold text-lg text-foreground">{conf.title}</h3>
             {conf.full_name && (
-              <p className="text-sm text-neutral-600 mb-2">{conf.full_name}</p>
+              <p className="text-sm text-muted-foreground mb-2">{conf.full_name}</p>
             )}
           </div>
           {conf.link && (
@@ -349,11 +349,11 @@ const CalendarPage = () => {
         <div className="space-y-2 mt-3">
           {deadlineDate && (
             <div className="flex items-start gap-2">
-              <span className="font-medium text-sm text-neutral-900">Deadline:</span>
-              <div className="text-sm text-neutral-900">
+              <span className="font-medium text-sm text-foreground">Deadline:</span>
+              <div className="text-sm text-foreground">
                 <div>{format(deadlineDate, 'MMMM d, yyyy')}</div>
                 {conf.timezone && (
-                  <div className="text-neutral-500 text-xs">
+                  <div className="text-muted-foreground text-xs">
                     Timezone: {conf.timezone}
                   </div>
                 )}
@@ -363,8 +363,8 @@ const CalendarPage = () => {
           
           {startDate && (
             <div className="flex items-start gap-2">
-              <span className="font-medium text-sm text-neutral-900">Date:</span>
-              <div className="text-sm text-neutral-900">
+              <span className="font-medium text-sm text-foreground">Date:</span>
+              <div className="text-sm text-foreground">
                 <div>
                   {format(startDate, 'MMMM d')}
                   {endDate ? ` - ${format(endDate, 'MMMM d, yyyy')}` : 
@@ -376,15 +376,15 @@ const CalendarPage = () => {
 
           {conf.place && (
             <div className="flex items-start gap-2">
-              <span className="font-medium text-sm text-neutral-900">Location:</span>
-              <span className="text-sm text-neutral-900">{conf.place}</span>
+              <span className="font-medium text-sm text-foreground">Location:</span>
+              <span className="text-sm text-foreground">{conf.place}</span>
             </div>
           )}
 
           {conf.note && (
             <div className="flex items-start gap-2 mt-2">
-              <span className="font-medium text-sm text-neutral-900">Note:</span>
-              <div className="text-sm text-neutral-900" 
+              <span className="font-medium text-sm text-foreground">Note:</span>
+              <div className="text-sm text-foreground" 
                 dangerouslySetInnerHTML={{ __html: conf.note }} 
               />
             </div>
@@ -395,7 +395,7 @@ const CalendarPage = () => {
           {Array.isArray(conf.tags) && conf.tags.map((tag) => (
             <span 
               key={tag} 
-              className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-neutral-100 text-neutral-900"
+              className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-muted text-foreground"
             >
               <Tag className="h-3 w-3 mr-1" />
               {categoryNames[tag] || tag}
@@ -423,15 +423,15 @@ const CalendarPage = () => {
                   onClick={() => setShowDeadlines(!showDeadlines)}
                   className={`
                     flex items-center gap-2 px-3 py-1.5 
-                    rounded-lg border border-red-200 
-                    bg-white hover:bg-red-50 
+                    rounded-lg border border-border 
+                    bg-card hover:bg-muted/80 
                     transition-all duration-200
                     cursor-pointer
-                    ${showDeadlines ? 'ring-2 ring-primary ring-offset-2' : ''}
+                    ${showDeadlines ? 'ring-2 ring-primary/60 ring-offset-2 ring-offset-background' : ''}
                   `}
                 >
-                  <div className="w-3 h-3 bg-red-500 rounded-full" />
-                  <span className="text-sm">Submission Deadlines</span>
+                  <div className="w-3 h-3 bg-destructive rounded-full" />
+                  <span className="text-sm text-foreground">Submission Deadlines</span>
                 </button>
               </TooltipTrigger>
               <TooltipContent>
@@ -441,7 +441,7 @@ const CalendarPage = () => {
           </TooltipProvider>
         </div>
 
-        <div className="h-6 w-px bg-neutral-200" /> {/* Divider */}
+        <div className="h-6 w-px bg-border" /> {/* Divider */}
 
         {categories.map(([tag, color]) => (
           <TooltipProvider key={tag}>
@@ -459,15 +459,15 @@ const CalendarPage = () => {
                   }}
                   className={`
                     flex items-center gap-2 px-3 py-1.5 
-                    rounded-lg border border-neutral-200 
-                    bg-white hover:bg-neutral-50 
+                    rounded-lg border border-border 
+                    bg-card hover:bg-muted/80 
                     transition-all duration-200
                     cursor-pointer
-                    ${selectedCategories.has(tag) ? 'ring-2 ring-primary ring-offset-2' : ''}
+                    ${selectedCategories.has(tag) ? 'ring-2 ring-primary/60 ring-offset-2 ring-offset-background' : ''}
                   `}
                 >
                   <div className={`w-3 h-3 rounded-full ${color}`} />
-                  <span className="text-sm">{categoryNames[tag] || tag}</span>
+                  <span className="text-sm text-foreground">{categoryNames[tag] || tag}</span>
                 </button>
               </TooltipTrigger>
               <TooltipContent>
@@ -483,8 +483,8 @@ const CalendarPage = () => {
               setSelectedCategories(new Set(orderedCategories));
               setShowDeadlines(true);
             }}
-            className="text-sm text-green-600 bg-green-50 hover:bg-green-100 hover:text-green-700
-              px-3 py-1.5 rounded-lg border border-green-200
+            className="text-sm text-secondary-foreground bg-secondary hover:bg-secondary/80
+              px-3 py-1.5 rounded-lg border border-border
               transition-colors flex items-center gap-2"
           >
             <Plus className="h-4 w-4" />
@@ -498,8 +498,8 @@ const CalendarPage = () => {
               setSelectedCategories(new Set());
               setShowDeadlines(false);
             }}
-            className="text-sm text-red-600 bg-red-50 hover:bg-red-100 hover:text-red-700
-              px-3 py-1.5 rounded-lg border border-red-200
+            className="text-sm text-destructive bg-destructive/10 hover:bg-destructive/20
+              px-3 py-1.5 rounded-lg border border-destructive/40
               transition-colors flex items-center gap-2"
           >
             <X className="h-4 w-4" />
@@ -513,13 +513,13 @@ const CalendarPage = () => {
   const renderViewToggle = () => {
     return (
       <div className="flex flex-col items-center gap-4 mb-6">
-        <div className="bg-neutral-100 rounded-lg p-1 inline-flex">
+        <div className="bg-muted rounded-lg p-1 inline-flex">
           <button
             onClick={() => setIsYearView(false)}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               !isYearView 
-                ? 'bg-white shadow-sm text-primary' 
-                : 'text-neutral-600 hover:text-neutral-900'
+                ? 'bg-card shadow-sm text-primary' 
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             Month View
@@ -528,8 +528,8 @@ const CalendarPage = () => {
             onClick={() => setIsYearView(true)}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               isYearView 
-                ? 'bg-white shadow-sm text-primary' 
-                : 'text-neutral-600 hover:text-neutral-900'
+                ? 'bg-card shadow-sm text-primary' 
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             Year View
@@ -544,7 +544,7 @@ const CalendarPage = () => {
                 setCurrentYear(newYear);
                 setSelectedDate(new Date(newYear, 0, 1)); // Set to January 1st of the new year
               }}
-              className="p-2 hover:bg-neutral-100 rounded-full transition-colors"
+              className="p-2 hover:bg-muted rounded-full transition-colors"
               aria-label="Previous year"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -558,7 +558,7 @@ const CalendarPage = () => {
                 setCurrentYear(newYear);
                 setSelectedDate(new Date(newYear, 0, 1)); // Set to January 1st of the new year
               }}
-              className="p-2 hover:bg-neutral-100 rounded-full transition-colors"
+              className="p-2 hover:bg-muted rounded-full transition-colors"
               aria-label="Next year"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -577,11 +577,11 @@ const CalendarPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-light">
+    <div className="min-h-screen bg-background">
       <Header onSearch={setSearchQuery} />
 
       {searchQuery && (
-        <div className="p-6 bg-white border-b">
+        <div className="p-6 bg-card border-b border-border">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-lg font-semibold mb-4">
               Search Results for "{searchQuery}"
@@ -590,7 +590,7 @@ const CalendarPage = () => {
               {getEvents(new Date()).map((conf: Conference) => (
                 <div 
                   key={conf.id || conf.title} 
-                  className="p-4 border rounded-lg hover:bg-neutral-50 cursor-pointer"
+                  className="p-4 border border-border rounded-lg bg-card hover:bg-muted/60 cursor-pointer transition-colors"
                   onClick={() => {
                     const deadlineDate = safeParseISO(conf.deadline);
                     const startDate = safeParseISO(conf.start);
@@ -614,7 +614,7 @@ const CalendarPage = () => {
                     <div>
                       <h3 className="font-semibold">{conf.title}</h3>
                       {conf.full_name && (
-                        <p className="text-sm text-neutral-600">{conf.full_name}</p>
+                        <p className="text-sm text-muted-foreground">{conf.full_name}</p>
                       )}
                     </div>
                     {conf.deadline && conf.deadline !== 'TBD' && (
@@ -628,7 +628,7 @@ const CalendarPage = () => {
                       {conf.tags.map(tag => (
                         <span 
                           key={tag}
-                          className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-neutral-100"
+                        className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-muted text-foreground"
                         >
                           <Tag className="h-3 w-3 mr-1" />
                           {categoryNames[tag] || tag}
@@ -639,7 +639,7 @@ const CalendarPage = () => {
                 </div>
               ))}
               {getEvents(new Date()).length === 0 && (
-                <p className="text-neutral-600">No conferences found matching your search.</p>
+                <p className="text-muted-foreground">No conferences found matching your search.</p>
               )}
             </div>
           </div>
@@ -664,7 +664,7 @@ const CalendarPage = () => {
                 onMonthChange={handleMonthChange}
                 fromMonth={isYearView ? new Date(currentYear, 0) : undefined}
                 toMonth={isYearView ? new Date(currentYear, 11) : undefined}
-                className="bg-white rounded-lg p-6 shadow-sm mx-auto w-full"
+                className="bg-card border border-border rounded-lg p-6 shadow-sm mx-auto w-full"
                 components={{
                   Day: ({ date, displayMonth, ...props }) => {
                     const isOutsideDay = date.getMonth() !== displayMonth.getMonth();
@@ -691,9 +691,9 @@ const CalendarPage = () => {
                   head_row: "flex",
                   head_cell: "text-muted-foreground rounded-md w-10 font-normal text-[0.8rem]",
                   row: "flex w-full mt-2",
-                  cell: "h-16 w-10 text-center text-sm p-0 relative focus-within:relative focus-within:z-20 hover:bg-neutral-50",
-                  day: "h-16 w-10 p-0 font-normal hover:bg-neutral-100 rounded-lg transition-colors",
-                  day_today: "bg-neutral-100 text-primary font-semibold",
+                  cell: "h-16 w-10 text-center text-sm p-0 relative focus-within:relative focus-within:z-20 hover:bg-muted/60",
+                  day: "h-16 w-10 p-0 font-normal hover:bg-muted rounded-lg transition-colors",
+                  day_today: "bg-muted text-primary font-semibold",
                   day_outside: "hidden",
                   nav: "space-x-1 flex items-center",
                   nav_button: isYearView ? "hidden" : "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
@@ -718,7 +718,7 @@ const CalendarPage = () => {
             <DialogTitle>
               Events for {selectedDayEvents.date ? format(selectedDayEvents.date, 'MMMM d, yyyy') : ''}
             </DialogTitle>
-            <div id="dialog-description" className="text-sm text-neutral-600">
+            <div id="dialog-description" className="text-sm text-muted-foreground">
               View conference details and deadlines for this date.
             </div>
           </DialogHeader>

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { CalendarDays, Globe, Tag, Clock, AlarmClock, CalendarPlus } from "lucide-react";
 import { Conference } from "@/types/conference";
-import { formatDistanceToNow, parseISO, isValid, format, parse, addDays } from "date-fns";
+import { formatDistanceToNow, parseISO, isValid, format, parse } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -86,7 +86,7 @@ const ConferenceDialog = ({ conference, open, onOpenChange }: ConferenceDialogPr
   }, [deadlineDate]);
 
   const getCountdownColor = () => {
-    if (!deadlineDate || !isValid(deadlineDate)) return "text-neutral-600";
+    if (!deadlineDate || !isValid(deadlineDate)) return "text-muted-foreground";
     const daysRemaining = Math.ceil((deadlineDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
     if (daysRemaining <= 7) return "text-red-600";
     if (daysRemaining <= 30) return "text-orange-600";
@@ -187,10 +187,10 @@ END:VCALENDAR`;
     
     const localTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return (
-      <div className="text-sm text-neutral-500">
+      <div className="text-sm text-muted-foreground">
         <div>{format(deadlineDate, "MMMM d, yyyy 'at' HH:mm:ss")} ({localTZ})</div>
         {conference.timezone && conference.timezone !== localTZ && (
-          <div className="text-xs">
+          <div className="text-xs text-muted-foreground/80">
             Conference timezone: {conference.timezone}
           </div>
         )}
@@ -221,10 +221,10 @@ END:VCALENDAR`;
         className="max-w-md w-full"
       >
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-blue-600">
+          <DialogTitle className="text-2xl font-bold text-primary">
             {conference.title} {conference.year}
           </DialogTitle>
-          <DialogDescription className="text-base text-gray-700">
+          <DialogDescription className="text-base text-muted-foreground">
             {conference.full_name}
           </DialogDescription>
         </DialogHeader>
@@ -232,37 +232,37 @@ END:VCALENDAR`;
         <div className="space-y-6 mt-4">
           <div className="space-y-4">
             <div className="flex items-start gap-2">
-              <CalendarDays className="h-5 w-5 mt-0.5 text-gray-500" />
+              <CalendarDays className="h-5 w-5 mt-0.5 text-muted-foreground" />
               <div>
                 <p className="font-medium">Dates</p>
-                <p className="text-sm text-gray-500">{conference.date}</p>
+                <p className="text-sm text-muted-foreground">{conference.date}</p>
               </div>
             </div>
 
             <div className="flex items-start gap-2">
-              <Globe className="h-5 w-5 mt-0.5 text-gray-500" />
+              <Globe className="h-5 w-5 mt-0.5 text-muted-foreground" />
               <div>
                 <p className="font-medium">Venue</p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   {conference.venue || [conference.city, conference.country].filter(Boolean).join(", ")}
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-2">
-              <Clock className="h-5 w-5 mt-0.5 text-gray-500" />
+              <Clock className="h-5 w-5 mt-0.5 text-muted-foreground" />
               <div className="space-y-2 flex-1">
                 <p className="font-medium">Important Deadlines</p>
-                <div className="text-sm text-gray-500 space-y-2">
+                <div className="text-sm text-muted-foreground space-y-2">
                   {upcomingDeadlines.length > 0 ? (
                     upcomingDeadlines.map((deadline, index) => {
                       const isNext = nextDeadline && deadline.date === nextDeadline.date && deadline.type === nextDeadline.type;
                       return (
                         <div 
                           key={`${deadline.type}-${index}`} 
-                          className={`rounded-md p-2 ${isNext ? 'bg-blue-100 border border-blue-200' : 'bg-gray-100'}`}
+                          className={`rounded-md p-2 ${isNext ? 'bg-primary/15 border border-primary/30' : 'bg-muted'}`}
                         >
-                          <p className={isNext ? 'font-medium text-blue-800' : ''}>
+                          <p className={isNext ? 'font-medium text-primary' : ''}>
                             {deadline.label}: {formatDeadlineDate(deadline.date)}
                             {isNext && <span className="ml-2 text-xs">(Next)</span>}
                           </p>
@@ -270,7 +270,7 @@ END:VCALENDAR`;
                       );
                     })
                   ) : (
-                    <div className="bg-gray-100 rounded-md p-2">
+                    <div className="bg-muted rounded-md p-2">
                       <p>No upcoming deadlines</p>
                     </div>
                   )}
@@ -302,11 +302,11 @@ END:VCALENDAR`;
 
           {conference.note && (
             <div 
-              className="text-sm text-neutral-600 mt-2 p-3 bg-neutral-50 rounded-lg"
+              className="text-sm text-muted-foreground mt-2 p-3 bg-muted rounded-lg"
               dangerouslySetInnerHTML={{ 
                 __html: conference.note.replace(
                   /<a(.*?)>/g, 
-                  '<a$1 style="color: #3b82f6; font-weight: 500; text-decoration: underline; text-underline-offset: 2px;">'
+                  '<a$1 style="color: hsl(var(--primary)); font-weight: 500; text-decoration: underline; text-underline-offset: 2px;">'
                 ) 
               }}
             />
@@ -341,15 +341,15 @@ END:VCALENDAR`;
                   Add to Calendar
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-white" align="end">
+              <DropdownMenuContent className="bg-popover border border-border" align="end">
                 <DropdownMenuItem 
-                  className="text-neutral-800 hover:bg-neutral-100"
+                  className="text-foreground hover:bg-muted"
                   onClick={() => createCalendarEvent('google')}
                 >
                   Add to Google Calendar
                 </DropdownMenuItem>
                 <DropdownMenuItem 
-                  className="text-neutral-800 hover:bg-neutral-100"
+                  className="text-foreground hover:bg-muted"
                   onClick={() => createCalendarEvent('apple')}
                 >
                   Add to Apple Calendar
