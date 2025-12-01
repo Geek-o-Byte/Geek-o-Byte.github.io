@@ -2,6 +2,7 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { CalendarDays } from "lucide-react";
+import { ModeToggle } from "@/components/ModeToggle";
 
 interface HeaderProps {
   onSearch: (query: string) => void;
@@ -10,10 +11,10 @@ interface HeaderProps {
 
 const Header = ({ onSearch, showEmptyMessage = false }: HeaderProps) => {
   return (
-    <header className="bg-white border-b border-neutral-200">
+    <header className="bg-background border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between md:h-16 py-4 md:py-0 gap-4 md:gap-0">
-          <div className="flex items-center justify-center md:justify-start w-full md:w-auto gap-8">
+          <div className="flex items-center justify-between md:justify-start w-full md:w-auto gap-8">
             <Link to="/" className="flex items-center gap-2">
               <img 
                 src="https://huggingface.co/front/assets/huggingface_logo.svg" 
@@ -25,20 +26,25 @@ const Header = ({ onSearch, showEmptyMessage = false }: HeaderProps) => {
                 <span className="md:hidden">AI Deadlines</span>
               </span>
             </Link>
+            
+            <div className="md:hidden">
+              <ModeToggle />
+            </div>
+
             <nav className="hidden md:flex space-x-4">
               <Link
                 to="/calendar"
-                className="text-neutral-600 hover:text-primary flex items-center gap-2"
+                className="text-muted-foreground hover:text-primary flex items-center gap-2 transition-colors"
               >
                 <CalendarDays className="h-5 w-5" />
                 Calendar
               </Link>
             </nav>
           </div>
-          <div className="w-full md:max-w-lg lg:max-w-xs">
-            <div className="relative">
+          <div className="flex items-center gap-4 w-full md:w-auto">
+            <div className="relative flex-1 md:w-64 lg:w-80">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-neutral-400" />
+                <Search className="h-5 w-5 text-muted-foreground" />
               </div>
               <Input
                 type="search"
@@ -47,17 +53,20 @@ const Header = ({ onSearch, showEmptyMessage = false }: HeaderProps) => {
                 onChange={(e) => onSearch(e.target.value)}
               />
             </div>
+            <div className="hidden md:block">
+              <ModeToggle />
+            </div>
           </div>
         </div>
         {showEmptyMessage && (
           <div className="max-w-4xl mx-auto mt-2 mb-0 text-center">
-            <p className="text-sm bg-amber-50 text-amber-800 py-2 px-4 rounded-md inline-block">
+            <p className="text-sm bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200 py-2 px-4 rounded-md inline-block">
               There are no upcoming conferences for the selected categories - enable "Show past conferences" to see previous ones
             </p>
           </div>
         )}
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-sm text-neutral-600 py-4">
+          <p className="text-sm text-muted-foreground py-4">
             Countdowns to top CV/NLP/ML/Robotics/AI conference deadlines. To add/edit a conference, send in a{' '}
             <a 
               href="https://github.com/huggingface/ai-deadlines"
@@ -113,6 +122,7 @@ const Header = ({ onSearch, showEmptyMessage = false }: HeaderProps) => {
             >
               demos
             </a>
+            {' '}to link them to your paper.
           </p>
         </div>
       </div>

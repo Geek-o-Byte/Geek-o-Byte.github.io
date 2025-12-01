@@ -6,24 +6,27 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Calendar from "./pages/Calendar";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="min-h-screen w-full" style={{ WebkitOverflowScrolling: "touch" }}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="min-h-screen w-full bg-background text-foreground" style={{ WebkitOverflowScrolling: "touch" }}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
