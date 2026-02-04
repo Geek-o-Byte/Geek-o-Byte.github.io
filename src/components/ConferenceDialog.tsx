@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { CalendarDays, Globe, Tag, Clock, AlarmClock, CalendarPlus } from "lucide-react";
+import { CalendarDays, Globe, Tag, Clock, AlarmClock, CalendarPlus, Trophy, BarChart3 } from "lucide-react";
 import { Conference } from "@/types/conference";
 import { formatDistanceToNow, parseISO, isValid, format, parse } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -238,6 +238,34 @@ END:VCALENDAR`;
                 </p>
               </div>
             </div>
+
+            {(conference.rankings || conference.hindex || conference.era_rating) && (
+              <div className="flex items-start gap-2">
+                <Trophy className="h-5 w-5 mt-0.5 text-muted-foreground" />
+                <div className="space-y-1">
+                  <p className="font-medium">Impact & Rankings</p>
+                  <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+                    {conference.rankings && (
+                      <div className="flex items-center gap-1.5 bg-muted px-2 py-1 rounded">
+                         <span>{conference.rankings}</span>
+                      </div>
+                    )}
+                    {conference.era_rating && (
+                       <div className="flex items-center gap-1.5 bg-muted px-2 py-1 rounded">
+                         <span className="opacity-70">ERA:</span>
+                         <span className="font-medium">{conference.era_rating.toUpperCase()}</span>
+                       </div>
+                    )}
+                    {conference.hindex && (
+                       <div className="flex items-center gap-1.5 bg-muted px-2 py-1 rounded">
+                         <BarChart3 className="h-3 w-3" />
+                         <span>h5-index: {conference.hindex}</span>
+                       </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="flex items-start gap-2">
               <Clock className="h-5 w-5 mt-0.5 text-muted-foreground" />

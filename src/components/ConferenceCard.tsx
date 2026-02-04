@@ -1,4 +1,4 @@
-import { CalendarDays, Globe, Tag, Clock, AlarmClock } from "lucide-react";
+import { CalendarDays, Globe, Tag, Clock, AlarmClock, Trophy, BarChart3 } from "lucide-react";
 import { Conference } from "@/types/conference";
 import { formatDistanceToNow, parseISO, isValid, isPast } from "date-fns";
 import ConferenceDialog from "./ConferenceDialog";
@@ -146,6 +146,29 @@ const ConferenceCard = ({
               {timeRemaining}
             </span>
           </div>
+
+          {(conference.rankings || conference.hindex || conference.era_rating) && (
+            <div className="flex flex-wrap gap-x-3 gap-y-1 items-center text-muted-foreground text-xs mt-1 pt-1 border-t border-border/50">
+              {conference.rankings && (
+                <div className="flex items-center" title="Conference Rankings">
+                  <Trophy className="h-3 w-3 mr-1 flex-shrink-0" />
+                  <span className="truncate max-w-[150px]">{conference.rankings}</span>
+                </div>
+              )}
+              {conference.era_rating && (
+                <div className="flex items-center" title="ERA Rating">
+                  <span className="font-semibold mr-1 text-[10px] uppercase tracking-wider bg-secondary px-1 rounded">ERA</span>
+                  <span>{conference.era_rating.toUpperCase()}</span>
+                </div>
+              )}
+              {conference.hindex && (
+                <div className="flex items-center" title="H5-Index">
+                  <BarChart3 className="h-3 w-3 mr-1 flex-shrink-0" />
+                  <span>h5: {conference.hindex}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {Array.isArray(tags) && tags.length > 0 && (
