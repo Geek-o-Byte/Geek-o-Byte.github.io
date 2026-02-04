@@ -1,0 +1,23 @@
+- title: USENIX Security
+  year: 2025
+  id: usenixsec25
+  full_name: 34th USENIX Security Symposium
+  link: https://www.usenix.org/conference/usenixsecurity25
+  date: August 13-15, 2025
+  city: Seattle
+  country: USA
+  venue: Seattle Convention Center
+  tags:
+  - security
+  - cybersecurity
+  rankings: 'CORE: A*, CCF: A'
+  deadlines:
+    - type: paper
+      label: Spring Deadline
+      date: '2025-02-04 23:59:59'
+      timezone: UTC-12
+    - type: paper
+      label: Summer Deadline
+      date: '2025-06-03 23:59:59'
+      timezone: UTC-12
+

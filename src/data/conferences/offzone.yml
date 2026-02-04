@@ -1,0 +1,29 @@
+- title: OFFZONE
+  year: 2025
+  id: offzone25
+  full_name: OFFZONE 2025
+  link: https://offzone.moscow/
+  date: August 2025
+  city: Moscow
+  country: Russia
+  tags:
+  - security
+  - cybersecurity
+  - practical-security
+  deadlines: []
+
+- title: OFFZONE
+  year: 2026
+  id: offzone26
+  full_name: OFFZONE 2026
+  link: https://offzone.moscow/
+  date: August 20-21, 2026
+  city: Moscow
+  country: Russia
+  venue: GOELRO
+  tags:
+  - security
+  - cybersecurity
+  - practical-security
+  deadlines: []
+

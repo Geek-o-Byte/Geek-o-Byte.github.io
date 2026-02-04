@@ -1,0 +1,19 @@
+- title: ZeroNights
+  year: 2025
+  id: zeronights25
+  full_name: ZeroNights 2025
+  link: https://zeronights.ru/
+  date: November 26, 2025
+  city: St. Petersburg
+  country: Russia
+  venue: LOFT HALL #7
+  tags:
+  - security
+  - cybersecurity
+  - offensive-security
+  deadlines:
+    - type: paper
+      label: Call for Papers
+      date: '2025-09-01 23:59:59' # Approximate, based on Nov date
+      timezone: UTC+3
+
