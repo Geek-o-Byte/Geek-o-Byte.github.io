@@ -10,15 +10,17 @@ import { extractCountry } from "@/utils/countryExtractor";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { X, ChevronRight, Filter, Globe } from "lucide-react";
+import { X, ChevronRight, Filter, Globe, Calendar, Trophy } from "lucide-react";
 import { getAllCountries } from "@/utils/countryExtractor";
 import { getDeadlineInLocalTime } from "@/utils/dateUtils";
-import { sortConferencesByDeadline } from "@/utils/conferenceUtils";
+import { sortConferencesByDeadline, getAllYears, getAllEraRatings } from "@/utils/conferenceUtils";
 import { hasUpcomingDeadlines } from "@/utils/deadlineUtils";
 
 const Index = () => {
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
   const [selectedCountries, setSelectedCountries] = useState<Set<string>>(new Set());
+  const [selectedYears, setSelectedYears] = useState<Set<number>>(new Set());
+  const [selectedRatings, setSelectedRatings] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
   const [showPastConferences, setShowPastConferences] = useState(false);
 
@@ -57,18 +59,26 @@ const Index = () => {
         // Filter by countries
         const matchesCountry = selectedCountries.size === 0 || 
           (conf.country && selectedCountries.has(conf.country));
+
+        // Filter by years
+        const matchesYear = selectedYears.size === 0 || 
+          (conf.year && selectedYears.has(conf.year));
+
+        // Filter by ratings
+        const matchesRating = selectedRatings.size === 0 || 
+          (conf.era_rating && selectedRatings.has(conf.era_rating.toUpperCase()));
         
         // Filter by search query
         const matchesSearch = searchQuery === "" || 
           conf.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           (conf.full_name && conf.full_name.toLowerCase().includes(searchQuery.toLowerCase()));
         
-        return matchesTags && matchesCountry && matchesSearch;
+        return matchesTags && matchesCountry && matchesYear && matchesRating && matchesSearch;
       });
     
     // Use the proper sorting function that handles both deadline formats
     return sortConferencesByDeadline(filtered);
-  }, [selectedTags, selectedCountries, searchQuery, showPastConferences]);
+  }, [selectedTags, selectedCountries, selectedYears, selectedRatings, searchQuery, showPastConferences]);
 
   // Update handleTagsChange to handle multiple tags
   const handleTagsChange = (newTags: Set<string>) => {
@@ -93,6 +103,28 @@ const Index = () => {
     window.history.replaceState({}, '', `${window.location.pathname}?${searchParams}`);
   };
 
+  const handleYearsChange = (newYears: Set<number>) => {
+    setSelectedYears(newYears);
+    const searchParams = new URLSearchParams(window.location.search);
+    if (newYears.size > 0) {
+      searchParams.set('years', Array.from(newYears).join(','));
+    } else {
+      searchParams.delete('years');
+    }
+    window.history.replaceState({}, '', `${window.location.pathname}?${searchParams}`);
+  };
+
+  const handleRatingsChange = (newRatings: Set<string>) => {
+    setSelectedRatings(newRatings);
+    const searchParams = new URLSearchParams(window.location.search);
+    if (newRatings.size > 0) {
+      searchParams.set('ratings', Array.from(newRatings).join(','));
+    } else {
+      searchParams.delete('ratings');
+    }
+    window.history.replaceState({}, '', `${window.location.pathname}?${searchParams}`);
+  };
+
   // Toggle a single tag
   const toggleTag = (tag: string) => {
     const newTags = new Set(selectedTags);
@@ -109,6 +141,8 @@ const Index = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const tagsParam = searchParams.get('tags');
     const countriesParam = searchParams.get('countries');
+    const yearsParam = searchParams.get('years');
+    const ratingsParam = searchParams.get('ratings');
     
     if (tagsParam) {
       const tags = tagsParam.split(',');
@@ -118,6 +152,16 @@ const Index = () => {
     if (countriesParam) {
       const countries = countriesParam.split(',');
       setSelectedCountries(new Set(countries));
+    }
+
+    if (yearsParam) {
+      const years = yearsParam.split(',').map(Number).filter(y => !isNaN(y));
+      setSelectedYears(new Set(years));
+    }
+
+    if (ratingsParam) {
+      const ratings = ratingsParam.split(',');
+      setSelectedRatings(new Set(ratings));
     }
   }, []);
 
@@ -199,7 +243,7 @@ const Index = () => {
               />
             </div>
             
-            <div className="flex items-center gap-2 bg-card border border-border p-2 rounded-md shadow-sm">
+            <div className="flex items-center gap-2 bg-card border border-border p-2 rounded-md shadow-sm flex-wrap">
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" size="sm" className="h-8 gap-1">
@@ -245,6 +289,92 @@ const Index = () => {
                   </div>
                 </PopoverContent>
               </Popover>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 gap-1">
+                    <Calendar className="h-4 w-4" />
+                    Filter by Year
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 p-4 bg-popover border border-border" align="start">
+                  <div className="space-y-4">
+                    <div>
+                      <div className="mb-4">
+                        <h4 className="text-sm font-medium text-foreground">Year</h4>
+                      </div>
+                      <div className="max-h-60 overflow-y-auto space-y-2 bg-popover">
+                        {getAllYears(conferencesData as Conference[]).map(year => (
+                          <div key={year} className="flex items-center space-x-2 hover:bg-muted/60 p-1 rounded">
+                            <Checkbox 
+                              id={`year-${year}`}
+                              checked={selectedYears.has(year)}
+                              onCheckedChange={() => {
+                                const newYears = new Set(selectedYears);
+                                if (newYears.has(year)) {
+                                  newYears.delete(year);
+                                } else {
+                                  newYears.add(year);
+                                }
+                                handleYearsChange(newYears);
+                              }}
+                            />
+                            <label 
+                              htmlFor={`year-${year}`}
+                              className="text-sm font-medium text-muted-foreground cursor-pointer w-full py-1"
+                            >
+                              {year}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 gap-1">
+                    <Trophy className="h-4 w-4" />
+                    Filter by Rating
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 p-4 bg-popover border border-border" align="start">
+                  <div className="space-y-4">
+                    <div>
+                      <div className="mb-4">
+                        <h4 className="text-sm font-medium text-foreground">ERA Rating</h4>
+                      </div>
+                      <div className="max-h-60 overflow-y-auto space-y-2 bg-popover">
+                        {getAllEraRatings(conferencesData as Conference[]).map(rating => (
+                          <div key={rating} className="flex items-center space-x-2 hover:bg-muted/60 p-1 rounded">
+                            <Checkbox 
+                              id={`rating-${rating}`}
+                              checked={selectedRatings.has(rating)}
+                              onCheckedChange={() => {
+                                const newRatings = new Set(selectedRatings);
+                                if (newRatings.has(rating)) {
+                                  newRatings.delete(rating);
+                                } else {
+                                  newRatings.add(rating);
+                                }
+                                handleRatingsChange(newRatings);
+                              }}
+                            />
+                            <label 
+                              htmlFor={`rating-${rating}`}
+                              className="text-sm font-medium text-muted-foreground cursor-pointer w-full py-1"
+                            >
+                              {rating}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
               
               {/* Display selected countries */}
               {Array.from(selectedCountries).map(country => (
@@ -261,15 +391,49 @@ const Index = () => {
                   <X className="ml-1 h-3 w-3" />
                 </button>
               ))}
+
+              {/* Display selected years */}
+              {Array.from(selectedYears).map(year => (
+                <button
+                  key={year}
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary/15 text-primary hover:bg-primary/20 font-medium"
+                  onClick={() => {
+                    const newYears = new Set(selectedYears);
+                    newYears.delete(year);
+                    handleYearsChange(newYears);
+                  }}
+                >
+                  {year}
+                  <X className="ml-1 h-3 w-3" />
+                </button>
+              ))}
+
+              {/* Display selected ratings */}
+              {Array.from(selectedRatings).map(rating => (
+                <button
+                  key={rating}
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary/15 text-primary hover:bg-primary/20 font-medium"
+                  onClick={() => {
+                    const newRatings = new Set(selectedRatings);
+                    newRatings.delete(rating);
+                    handleRatingsChange(newRatings);
+                  }}
+                >
+                  ERA: {rating}
+                  <X className="ml-1 h-3 w-3" />
+                </button>
+              ))}
               
               {/* Clear all filters button */}
-              {(selectedTags.size > 0 || selectedCountries.size > 0) && (
+              {(selectedTags.size > 0 || selectedCountries.size > 0 || selectedYears.size > 0 || selectedRatings.size > 0) && (
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={() => {
                     handleTagsChange(new Set());
                     handleCountriesChange(new Set());
+                    handleYearsChange(new Set());
+                    handleRatingsChange(new Set());
                   }}
                   className="text-muted-foreground hover:text-foreground"
                 >

@@ -17,7 +17,7 @@ export function sortConferencesByDeadline(conferences: Conference[]): Conference
       if (!bPrimaryDeadline) return -1;
     }
     
-    // Both have deadlines, compare them
+    // Both have deadlines, compare them    
     if (aPrimaryDeadline && bPrimaryDeadline) {
       const aDeadline = getDeadlineInLocalTime(aPrimaryDeadline.date, aPrimaryDeadline.timezone || a.timezone);
       const bDeadline = getDeadlineInLocalTime(bPrimaryDeadline.date, bPrimaryDeadline.timezone || b.timezone);
@@ -35,4 +35,30 @@ export function sortConferencesByDeadline(conferences: Conference[]): Conference
     
     return 0;
   });
-} 
+}
+
+/**
+ * Extract all unique years from conferences
+ */
+export function getAllYears(conferences: Conference[]): number[] {
+  const years = new Set<number>();
+  conferences.forEach(conf => {
+    if (conf.year) {
+      years.add(conf.year);
+    }
+  });
+  return Array.from(years).sort((a, b) => b - a); // Descending order
+}
+
+/**
+ * Extract all unique ERA ratings from conferences
+ */
+export function getAllEraRatings(conferences: Conference[]): string[] {
+  const ratings = new Set<string>();
+  conferences.forEach(conf => {
+    if (conf.era_rating) {
+      ratings.add(conf.era_rating.toUpperCase());
+    }
+  });
+  return Array.from(ratings).sort();
+}
