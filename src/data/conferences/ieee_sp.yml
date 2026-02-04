@@ -17,3 +17,25 @@
       date: '2024-12-05 23:59:59'
       timezone: UTC-12
 
+- title: IEEE S&P
+  year: 2026
+  id: sp26
+  full_name: IEEE Symposium on Security and Privacy
+  link: https://sp2026.ieee-security.org/
+  date: May 18-21, 2026
+  city: San Francisco
+  country: USA
+  venue: Hilton San Francisco Union Square
+  tags:
+  - security
+  - cybersecurity
+  rankings: 'CORE: A*, CCF: A'
+  deadlines:
+    - type: paper
+      label: Cycle 1 Deadline
+      date: '2025-06-05 23:59:59'
+      timezone: UTC-12
+    - type: paper
+      label: Cycle 2 Deadline
+      date: '2025-11-13 23:59:59'
+      timezone: UTC-12
