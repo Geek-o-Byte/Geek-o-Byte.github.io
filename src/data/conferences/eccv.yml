@@ -3,10 +3,44 @@
   id: eecv26
   full_name: European Conference on Computer Vision
   link: https://eccv.ecva.net/Conferences/2026
-  deadline: '2026-03-06 11:00:00'
-  timezone: UTC+0
   city: Malmö
   country: Sweden
-  date: September 8 - September 13, 2026
+  date: September 8-13, 2026
+  start: 2026-09-08
+  end: 2026-09-13
+  era_rating: a
   tags:
   - computer-vision
+  deadlines:
+  - type: registration
+    label: Paper Registration
+    date: '2026-02-26 23:59:59'
+    timezone: CET
+  - type: paper
+    label: Paper Submission
+    date: '2026-03-05 23:59:59'
+    timezone: CET
+  - type: supplementary
+    label: Supplemental Materials
+    date: '2026-03-12 23:59:59'
+    timezone: CET
+  - type: review_release
+    label: Reviews Released to Authors
+    date: '2026-05-02 23:59:59'
+    timezone: CET
+  - type: rebuttal_end
+    label: Rebuttal Deadline
+    date: '2026-05-11 23:59:59'
+    timezone: CET
+  - type: notification
+    label: Final Decisions
+    date: '2026-06-17 23:59:59'
+    timezone: CET
+  - type: camera_ready
+    label: Camera Ready Deadline
+    date: '2026-06-27 23:59:59'
+    timezone: CET
+  - type: submission
+    label: Workshop/Tutorial Proposal Submission
+    date: '2026-02-14 23:59:59'
+    timezone: AoE

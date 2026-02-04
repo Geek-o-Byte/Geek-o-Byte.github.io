@@ -3,14 +3,15 @@
   id: fg26
   full_name: International Conference on Automatic Face and Gesture Recognition
   link: https://fg2026.ieee-biometrics.org/
+  era_rating: c
   deadlines:
   - type: abstract
     label: Abstract Submission (Round 1)
     date: '2025-09-25 23:59:59'
     timezone: UTC-12
   - type: submission
-    label: Paper Submission (Round 1)
-    date: '2025-10-02 23:59:59'
+    label: Paper Submission (Round 1) - Extended
+    date: '2025-10-06 23:59:59'
     timezone: UTC-12
   - type: notification
     label: Notifications to authors (Round 1)
@@ -26,11 +27,11 @@
     timezone: UTC-12
   - type: notification
     label: Notifications to authors (Round 2)
-    date: '2026-05-02 23:59:59'
+    date: '2026-04-02 23:59:59'
     timezone: UTC-12
   - type: camera_ready
     label: Camera-ready (for all accepted papers)
-    date: '2026-05-21 23:59:59'
+    date: '2026-04-21 23:59:59'
     timezone: UTC-12
   timezone: GMT+02
   date: May 25-29, 2026
